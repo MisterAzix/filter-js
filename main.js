@@ -122,6 +122,20 @@ function grey() {
         }
     }
 }
+
+function dark() {
+    grey();
+
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            let temp = (tr[x][y] > 128) ? 255 : 0;
+            tr[x][y] = temp;
+            tg[x][y] = temp;
+            tb[x][y] = temp;
+            ta[x][y] = 255;
+        }
+    }
+}
 // Set up our event listener to run the startup process
 // once loading is complete.
 window.addEventListener('load', startup);

@@ -172,6 +172,7 @@ function purpleCanal() {
     }
 }
 
+
 function invertColors() {
     for (var y = 0; y < height; y++) {
         for (var x = 0; x < width; x++) {
@@ -180,6 +181,22 @@ function invertColors() {
             tb[x][y] = 255 - tb[x][y];
         }
     }
+}
+
+function verticalFlip() {
+    for (var x = 0; x < width; x++) {
+        tr[x].reverse();
+        tg[x].reverse();
+        tb[x].reverse();
+        ta[x].reverse();
+    }
+}
+
+function horizontalFlip() {
+    tr.reverse();
+    tg.reverse();
+    tb.reverse();
+    ta.reverse();
 }
 // Set up our event listener to run the startup process
 // once loading is complete.

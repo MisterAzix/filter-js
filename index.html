@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>FilterJS</title>
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <main class="container">
+            <div class="d-flex flex-column align-items-center">
+                <h1 class="center">FILTERS</h1>
+
+                <div class="row my-3">
+                    <div class="col-5">
+                        <video class="w-100 border" id="video">Video stream not available.</video>
+                    </div>
+                    <div
+                        class="
+                            col-2
+                            d-flex
+                            flex-column
+                            justify-content-center
+                            align-items-center
+                        "
+                    >
+                        <button class="btn btn-success m-1" id="toggleButton">
+                            Toggle Filter
+                        </button>
+                    </div>
+                    <div class="col-5">
+                        <canvas class="w-100 border" id="canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- SCRIPT -->
+        <script src="main.js"></script>
+    </body>
+</html>

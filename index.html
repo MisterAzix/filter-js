@@ -15,7 +15,7 @@
     <body>
         <main class="container">
             <div class="d-flex flex-column align-items-center">
-                <h1 class="center">FILTERS</h1>
+                <h1 class="center">FILTERS JS</h1>
 
                 <div class="row my-3">
                     <div class="col-5">
@@ -42,6 +42,21 @@
                 </div>
 
                 <div class="row my-3">
+                    <select
+                        class="form-select mb-5"
+                        name="filter"
+                        id="filterSelector"
+                    >
+                        <option value="">--- SELECT A FILTER ---</option>
+                        <option value="grey">grey</option>
+                        <option value="dark">dark</option>
+                        <option value="negatif">negatif</option>
+                        <option value="redCanal">redCanal</option>
+                        <option value="greenCanal">greenCanal</option>
+                        <option value="blueCanal">blueCanal</option>
+                        <option value="purpleCanal">purpleCanal</option>
+                        <option value="glitch">extrude</option>
+                    </select>
                     <label for="sensibilityRange" class="form-label"
                         >Sensibility</label
                     >
@@ -72,6 +87,28 @@
                         max="100"
                         id="contrastRange"
                     />
+                    <div class="my-3">
+                        <button id="horizontalFlipButton" class="btn btn-primary">horizontalFlip</button>
+                        <button id="verticalFlipButton" class="btn btn-primary">verticalFlip</button>
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <!-- <button class="btn btn-success" onclick="imgLoad();"">RESET</button> -->
+                    <!-- <button class="btn btn-primary" onclick="dark()">
+                        Apply Filter
+                    </button> -->
+                    <!-- <button class="btn btn-primary m-1" onclick="grey();">grey</button>
+					<button class="btn btn-primary m-1" onclick="dark();">dark</button>
+					<button class="btn btn-primary m-1" onclick="negatif();">negatif</button>
+					<button class="btn btn-primary m-1" onclick="redCanal();">red</button>
+					<button class="btn btn-primary m-1" onclick="greenCanal();">green</button>
+					<button class="btn btn-primary m-1" onclick="blueCanal();">blue</button>
+					<button class="btn btn-primary m-1" onclick="purpleCanal();">purple</button>
+					<button class="btn btn-primary m-1" onclick="verticalFlip();">verticalFlip</button>
+					<button class="btn btn-primary m-1" onclick="horizontalFlip();">horizontalFlip</button>
+					<button class="btn btn-primary m-1" onclick="extrude();">extrude</button> -->
+                    <!-- <button class="btn btn-primary m-1" onclick="glitch();">glitch</button> -->
                 </div>
             </div>
         </main>

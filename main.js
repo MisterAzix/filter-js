@@ -15,13 +15,16 @@ let tr, tg, tb, ta;
 let width, height;
 let imageData;
 
-let activeFilter = dark();
+let applyHorizontalFlip = false;
+let applyVerticalFlip = false;
 
 function startup() {
     video = document.getElementById('video');
     canvas = document.getElementById('canvas');
     startButton = document.getElementById('startButton');
     toggleButton = document.getElementById('toggleButton');
+    horizontalFlipButton = document.getElementById('horizontalFlipButton');
+    verticalFlipButton = document.getElementById('verticalFlipButton');
     context = canvas.getContext('2d');
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
@@ -50,6 +53,14 @@ function startup() {
     toggleButton.addEventListener('click', function () {
         applyEffect = !applyEffect;
     });
+
+    horizontalFlipButton.addEventListener('click', function () {
+        applyHorizontalFlip = !applyHorizontalFlip;
+    });
+
+    verticalFlipButton.addEventListener('click', function () {
+        applyVerticalFlip = !applyVerticalFlip;
+    });
 }
 
 function drawFrame(video) {
@@ -70,12 +81,17 @@ function drawFrame(video) {
         ta = new Array(width).fill().map(() => Array(height));
 
         separatePixArray(pix);
+
+        applyHorizontalFlip && horizontalFlip(); //Apply HorizontalFlip
+        applyVerticalFlip && verticalFlip(); //Apply VerticalFlip
         brightness(); //Apply Brightness
         contrast(); //Apply Contrast
         glitch(); //Apply Filter
+
         mergePixArray(pix);
     }
 
+    //Utilisation de requestAnimationFrame() au lieu de setTimeout() afin d'optimiser
     window.requestAnimationFrame(function () {
         drawFrame(video);
     });
@@ -284,6 +300,7 @@ function brightness() {
     let brightnessRange = document.getElementById('brightnessRange');
     let brightness = brightnessRange.value;
 
+    //On return quand brightness est à 0 pour optimiser la vidéo si on ne souhaite pas augmenter ou diminuer le brightness
     if (brightness === 0) return;
 
     for (var y = 0; y < height; y++) {
@@ -300,6 +317,7 @@ function contrast() {
     let contrastRange = document.getElementById('contrastRange');
     let contrast = parseInt(contrastRange.value);
 
+    //On return quand contrast est à 0 pour optimiser la vidéo si on ne souhaite pas augmenter ou diminuer le contrast
     if (contrast === 0) return;
 
     let factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
@@ -313,29 +331,6 @@ function contrast() {
             tr[x][y] = trContrast < 0 ? 0 : (trContrast > 255 ? 255 : trContrast);
             tg[x][y] = tgContrast < 0 ? 0 : (tgContrast > 255 ? 255 : tgContrast);
             tb[x][y] = tbContrast < 0 ? 0 : (tbContrast > 255 ? 255 : tbContrast);
-        }
-    }
-}
-
-function blur() {
-    for (var y = 1; y < height - 1; y++) {
-        for (var x = 1; x < width - 1; x++) {
-
-            let moyr = (tr[x][y + 1] + tr[x + 1][y + 1] + tr[x - 1][y + 1] +
-                tr[x][y] + tr[x + 1][y] + tr[x - 1][y] +
-                tr[x][y - 1] + tr[x + 1][y - 1] + tr[x - 1][y - 1]) / 9;
-
-            let moyb = (tb[x][y + 1] + tb[x + 1][y + 1] + tb[x - 1][y + 1] +
-                tb[x][y] + tb[x + 1][y] + tb[x - 1][y] +
-                tb[x][y - 1] + tb[x + 1][y - 1] + tb[x - 1][y - 1]) / 9;
-
-            let moyg = (tg[x][y + 1] + tg[x + 1][y + 1] + tg[x - 1][y + 1] +
-                tg[x][y] + tg[x + 1][y] + tg[x - 1][y] +
-                tg[x][y - 1] + tg[x + 1][y - 1] + tg[x - 1][y - 1]) / 9;
-
-            tr[x][y] = moyr;
-            tb[x][y] = moyb;
-            tg[x][y] = moyg;
         }
     }
 }

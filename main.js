@@ -136,6 +136,41 @@ function dark() {
         }
     }
 }
+
+function redCanal() {
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            tg[x][y] = 0;
+            tb[x][y] = 0;
+        }
+    }
+}
+
+function greenCanal() {
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            tr[x][y] = 0;
+            tb[x][y] = 0;
+        }
+    }
+}
+
+function blueCanal() {
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            tr[x][y] = 0;
+            tg[x][y] = 0;
+        }
+    }
+}
+
+function purpleCanal() {
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            tg[x][y] = 0;
+        }
+    }
+}
 // Set up our event listener to run the startup process
 // once loading is complete.
 window.addEventListener('load', startup);

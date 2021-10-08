@@ -171,6 +171,16 @@ function purpleCanal() {
         }
     }
 }
+
+function invertColors() {
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            tr[x][y] = 255 - tr[x][y];
+            tg[x][y] = 255 - tg[x][y];
+            tb[x][y] = 255 - tb[x][y];
+        }
+    }
+}
 // Set up our event listener to run the startup process
 // once loading is complete.
 window.addEventListener('load', startup);

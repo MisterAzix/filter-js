@@ -12,10 +12,11 @@ let tr, tg, tb, ta;
 let width, height;
 let imageData;
 
-let applyEffect;
-
+let applyEffect = false;
 let applyHorizontalFlip = false;
 let applyVerticalFlip = false;
+
+let selectedFilter;
 
 function startup() {
     video = document.getElementById('video');
@@ -25,17 +26,18 @@ function startup() {
     let toggleButton = document.getElementById('toggleButton');
     let horizontalFlipButton = document.getElementById('horizontalFlipButton');
     let verticalFlipButton = document.getElementById('verticalFlipButton');
+    let filterSelector = document.getElementById('filterSelector');
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-        .then(function (stream) {
+        .then((stream) => {
             video.srcObject = stream;
             video.play();
         })
-        .catch(function (err) {
+        .catch((err) => {
             console.log("An error occurred: " + err);
         });
 
-    video.addEventListener('canplay', function (ev) {
+    video.addEventListener('canplay', (ev) => {
         if (!streaming) {
             // Set the canvas the same width and height of the video
             canvas.width = video.videoWidth;
@@ -49,17 +51,10 @@ function startup() {
         }
     }, false);
 
-    toggleButton.addEventListener('click', function () {
-        applyEffect = !applyEffect;
-    });
-
-    horizontalFlipButton.addEventListener('click', function () {
-        applyHorizontalFlip = !applyHorizontalFlip;
-    });
-
-    verticalFlipButton.addEventListener('click', function () {
-        applyVerticalFlip = !applyVerticalFlip;
-    });
+    toggleButton.addEventListener('click', () => applyEffect = !applyEffect);
+    horizontalFlipButton.addEventListener('click', () => applyHorizontalFlip = !applyHorizontalFlip);
+    verticalFlipButton.addEventListener('click', () => applyVerticalFlip = !applyVerticalFlip);
+    filterSelector.addEventListener('change', () => selectedFilter = filterSelector.value);
 }
 
 function drawFrame(video) {
@@ -85,7 +80,8 @@ function drawFrame(video) {
         applyVerticalFlip && verticalFlip(); //Apply VerticalFlip
         brightness(); //Apply Brightness
         contrast(); //Apply Contrast
-        glitch(); //Apply Filter
+
+        applyFilter(); //Apply Filter
 
         mergePixArray(pix);
     }
@@ -94,6 +90,42 @@ function drawFrame(video) {
     window.requestAnimationFrame(function () {
         drawFrame(video);
     });
+}
+
+function applyFilter() {
+    switch (selectedFilter) {
+        case 'grey':
+            grey();
+            break;
+        case 'dark':
+            dark();
+            break;
+        case 'negative':
+            negative();
+            break;
+        case 'redCanal':
+            redCanal();
+            break;
+        case 'greenCanal':
+            greenCanal();
+            break;
+        case 'blueCanal':
+            blueCanal();
+            break;
+        case 'purpleCanal':
+            purpleCanal();
+            break;
+        case 'extrude':
+            extrude();
+            break;
+        case 'glitch':
+            glitch();
+            break;
+        default:
+            applyEffect = !applyEffect
+            alert('Please select a filter');
+            break;
+    }
 }
 
 function separatePixArray(pix) {
@@ -192,7 +224,7 @@ function purpleCanal() {
     }
 }
 
-function invertColors() {
+function negative() {
     for (var y = 0; y < height; y++) {
         for (var x = 0; x < width; x++) {
             tr[x][y] = 255 - tr[x][y];

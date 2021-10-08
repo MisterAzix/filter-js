@@ -172,7 +172,6 @@ function purpleCanal() {
     }
 }
 
-
 function invertColors() {
     for (var y = 0; y < height; y++) {
         for (var x = 0; x < width; x++) {
@@ -197,6 +196,20 @@ function horizontalFlip() {
     tg.reverse();
     tb.reverse();
     ta.reverse();
+}
+
+function glitch() {
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width - 20; x++) {
+            tr[x][y] = tr[x + 20][y];
+        }
+    }
+
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width - 20; x++) {
+            tb[x][y] = tb[x + 20][y];
+        }
+    }
 }
 // Set up our event listener to run the startup process
 // once loading is complete.

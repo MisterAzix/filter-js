@@ -70,7 +70,9 @@ function drawFrame(video) {
         ta = new Array(width).fill().map(() => Array(height));
 
         separatePixArray(pix);
-        extrude(); //Apply Filter
+        brightness(); //Apply Brightness
+        contrast(); //Apply Contrast
+        glitch(); //Apply Filter
         mergePixArray(pix);
     }
 
@@ -202,15 +204,18 @@ function horizontalFlip() {
 }
 
 function glitch() {
+    let range = document.getElementById('sensibilityRange');
+    let offset = 10 * parseInt(range.value);
+
     for (var y = 0; y < height; y++) {
-        for (var x = 0; x < width - 20; x++) {
-            tr[x][y] = tr[x + 20][y];
+        for (var x = 0; x < width - offset; x++) {
+            tr[x][y] = tr[x + offset][y];
         }
     }
 
     for (var y = 0; y < height; y++) {
-        for (var x = 0; x < width - 20; x++) {
-            tb[x][y] = tb[x + 20][y];
+        for (var x = 0; x < width - offset; x++) {
+            tb[x][y] = tb[x + offset][y];
         }
     }
 }
@@ -270,6 +275,44 @@ function extrude() {
                 tg[x][y] = tg2[x][y];
                 tb[x][y] = tb2[x][y];
             }
+        }
+    }
+}
+
+function brightness() {
+
+    let brightnessRange = document.getElementById('brightnessRange');
+    let brightness = brightnessRange.value;
+
+    if (brightness === 0) return;
+
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            tr[x][y] += 255 * (brightness / 100);
+            tg[x][y] += 255 * (brightness / 100);
+            tb[x][y] += 255 * (brightness / 100);
+        }
+    }
+}
+
+function contrast() {
+
+    let contrastRange = document.getElementById('contrastRange');
+    let contrast = parseInt(contrastRange.value);
+
+    if (contrast === 0) return;
+
+    let factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
+    for (var y = 0; y < height; y++) {
+        for (var x = 0; x < width; x++) {
+            trContrast = factor * (tr[x][y] - 128) + 128;
+            tgContrast = factor * (tr[x][y] - 128) + 128;
+            tbContrast = factor * (tr[x][y] - 128) + 128;
+
+            tr[x][y] = trContrast < 0 ? 0 : (trContrast > 255 ? 255 : trContrast);
+            tg[x][y] = tgContrast < 0 ? 0 : (tgContrast > 255 ? 255 : tgContrast);
+            tb[x][y] = tbContrast < 0 ? 0 : (tbContrast > 255 ? 255 : tbContrast);
         }
     }
 }

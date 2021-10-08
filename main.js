@@ -70,7 +70,7 @@ function drawFrame(video) {
         ta = new Array(width).fill().map(() => Array(height));
 
         separatePixArray(pix);
-        grey(); //Apply Filter
+        extrude(); //Apply Filter
         mergePixArray(pix);
     }
 
@@ -126,9 +126,12 @@ function grey() {
 function dark() {
     grey();
 
+    let range = document.getElementById('sensibilityRange');
+    let sensibility = 128 * (1 - range.value / 10);
+
     for (var y = 0; y < height; y++) {
         for (var x = 0; x < width; x++) {
-            let temp = (tr[x][y] > 128) ? 255 : 0;
+            let temp = (tr[x][y] > sensibility) ? 255 : 0;
             tr[x][y] = temp;
             tg[x][y] = temp;
             tb[x][y] = temp;
@@ -211,6 +214,66 @@ function glitch() {
         }
     }
 }
+
+function extrude() {
+    dark();
+
+    let range = document.getElementById('sensibilityRange');
+
+    for (let i = 0; i < range.value; i++) {
+        let tr2 = new Array(width).fill().map(() => Array(height));
+        let tg2 = new Array(width).fill().map(() => Array(height));
+        let tb2 = new Array(width).fill().map(() => Array(height));
+        let ta2 = new Array(width).fill().map(() => Array(height));
+
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+                tr2[x][y] = tr[x][y];
+                tg2[x][y] = tg[x][y];
+                tb2[x][y] = tb[x][y];
+                ta2[x][y] = ta[x][y];
+            }
+        }
+
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+                if (tr[x][y] === 0 && tg[x][y] === 0 && tb[x][y] === 0 && ta[x][y] === 255) {
+                    if ((y - 1) in tr[x] &&
+                        (y + 1) in tr[x] &&
+                        (x - 1) in tr &&
+                        (x + 1) in tr &&
+                        y in tr[x - 1] &&
+                        y in tr[x + 1]
+                    ) {
+                        tr2[x - 1][y] = 0;
+                        tr2[x + 1][y] = 0;
+                        tr2[x][y - 1] = 0;
+                        tr2[x][y + 1] = 0;
+
+                        tg2[x - 1][y] = 0;
+                        tg2[x + 1][y] = 0;
+                        tg2[x][y - 1] = 0;
+                        tg2[x][y + 1] = 0;
+
+                        tb2[x - 1][y] = 0;
+                        tb2[x + 1][y] = 0;
+                        tb2[x][y - 1] = 0;
+                        tb2[x][y + 1] = 0;
+                    }
+                }
+            }
+        }
+
+        for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+                tr[x][y] = tr2[x][y];
+                tg[x][y] = tg2[x][y];
+                tb[x][y] = tb2[x][y];
+            }
+        }
+    }
+}
+
 // Set up our event listener to run the startup process
 // once loading is complete.
 window.addEventListener('load', startup);

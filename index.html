@@ -19,7 +19,9 @@
 
                 <div class="row my-3">
                     <div class="col-5">
-                        <video class="w-100 border" id="video">Video stream not available.</video>
+                        <video class="w-100 border" id="video">
+                            Video stream not available.
+                        </video>
                     </div>
                     <div
                         class="
@@ -37,6 +39,19 @@
                     <div class="col-5">
                         <canvas class="w-100 border" id="canvas"></canvas>
                     </div>
+                </div>
+
+                <div class="row my-3">
+                    <label for="sensibilityRange" class="form-label"
+                        >Sensibility</label
+                    >
+                    <input
+                        type="range"
+                        class="form-range"
+                        min="0"
+                        max="5"
+                        id="sensibilityRange"
+                    />
                 </div>
             </div>
         </main>

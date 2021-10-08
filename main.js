@@ -76,9 +76,9 @@ function drawFrame(video) {
         mergePixArray(pix);
     }
 
-    setTimeout(function () {
+    window.requestAnimationFrame(function () {
         drawFrame(video);
-    }, 10);
+    });
 }
 
 function separatePixArray(pix) {
@@ -313,6 +313,29 @@ function contrast() {
             tr[x][y] = trContrast < 0 ? 0 : (trContrast > 255 ? 255 : trContrast);
             tg[x][y] = tgContrast < 0 ? 0 : (tgContrast > 255 ? 255 : tgContrast);
             tb[x][y] = tbContrast < 0 ? 0 : (tbContrast > 255 ? 255 : tbContrast);
+        }
+    }
+}
+
+function blur() {
+    for (var y = 1; y < height - 1; y++) {
+        for (var x = 1; x < width - 1; x++) {
+
+            let moyr = (tr[x][y + 1] + tr[x + 1][y + 1] + tr[x - 1][y + 1] +
+                tr[x][y] + tr[x + 1][y] + tr[x - 1][y] +
+                tr[x][y - 1] + tr[x + 1][y - 1] + tr[x - 1][y - 1]) / 9;
+
+            let moyb = (tb[x][y + 1] + tb[x + 1][y + 1] + tb[x - 1][y + 1] +
+                tb[x][y] + tb[x + 1][y] + tb[x - 1][y] +
+                tb[x][y - 1] + tb[x + 1][y - 1] + tb[x - 1][y - 1]) / 9;
+
+            let moyg = (tg[x][y + 1] + tg[x + 1][y + 1] + tg[x - 1][y + 1] +
+                tg[x][y] + tg[x + 1][y] + tg[x - 1][y] +
+                tg[x][y - 1] + tg[x + 1][y - 1] + tg[x - 1][y - 1]) / 9;
+
+            tr[x][y] = moyr;
+            tb[x][y] = moyb;
+            tg[x][y] = moyg;
         }
     }
 }

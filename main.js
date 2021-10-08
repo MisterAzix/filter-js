@@ -6,14 +6,13 @@ let streaming = false;
 // will be set by the startup() function.
 let video;
 let canvas;
-let startButton;
-
 let context;
-let applyEffect;
 
 let tr, tg, tb, ta;
 let width, height;
 let imageData;
+
+let applyEffect;
 
 let applyHorizontalFlip = false;
 let applyVerticalFlip = false;
@@ -21,11 +20,11 @@ let applyVerticalFlip = false;
 function startup() {
     video = document.getElementById('video');
     canvas = document.getElementById('canvas');
-    startButton = document.getElementById('startButton');
-    toggleButton = document.getElementById('toggleButton');
-    horizontalFlipButton = document.getElementById('horizontalFlipButton');
-    verticalFlipButton = document.getElementById('verticalFlipButton');
     context = canvas.getContext('2d');
+
+    let toggleButton = document.getElementById('toggleButton');
+    let horizontalFlipButton = document.getElementById('horizontalFlipButton');
+    let verticalFlipButton = document.getElementById('verticalFlipButton');
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
         .then(function (stream) {
@@ -64,17 +63,17 @@ function startup() {
 }
 
 function drawFrame(video) {
-    // recopie l'image dans le canevas
+    // Recopie l'image dans le canvas
     context.drawImage(video, 0, 0);
 
     if (applyEffect) {
-        // extrait le tableau de pixels du canvas
+        // Extrait le tableau de pixels du canvas
         imageData = context.getImageData(0, 0, canvas.width, canvas.height);
         let pix = imageData.data;
 
         // PASSAGE EN 1D POUR SIMPLIFIER LA GESTION DU VOISINAGE
         // 1 tab 1D -> 4 tab 2D (r,g,b,a) 
-        // déclaration de 4 tableaux à 2 dim (de taille width * height)
+        // Déclaration de 4 tableaux à 2 dim (de taille width * height)
         tr = new Array(width).fill().map(() => Array(height));
         tg = new Array(width).fill().map(() => Array(height));
         tb = new Array(width).fill().map(() => Array(height));
